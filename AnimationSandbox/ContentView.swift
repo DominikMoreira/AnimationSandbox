@@ -8,32 +8,42 @@
 import SwiftUI
 
 struct ContentView: View {
-    @State private var animationAmount = 1.0
+    @State private var animationAmount = 0.0
+    @State private var enabled = false
 
     var body: some View {
-        Text("Click Me")
-            .onTapGesture {
-                //  animationAmount += 1
-            }
-            .padding(50)
-            .background(.red)
-            .foregroundStyle(.white)
-            .clipShape(.circle)
-            .overlay(
-                Circle()
-                    .stroke(.red)
-                    .scaleEffect(animationAmount)
-                    .opacity(2 - animationAmount)
-                    .animation(
-                        .easeInOut(duration: 1)
-                            .repeatForever(autoreverses: false),
-                        value: animationAmount
-                    )
-            )
-            .padding(100)
-            .onAppear {
-                animationAmount = 2
-            }
+        HStack {
+            Text("Inital")
+                .onTapGesture {
+                }
+                .frame(width: 200, height: 200)
+                .background(.blue)
+                .foregroundStyle(.white)
+                .clipShape(.rect(cornerRadius: enabled ? 60 : 0))
+                .animation(.default, value: enabled)
+            Text("Click Me")
+                .onTapGesture {
+                    enabled.toggle()
+                }
+                .frame(width: 200, height: 200)
+                .background(enabled ? .blue : .red)
+                .animation(nil, value: enabled)
+                .foregroundStyle(.white)
+                .clipShape(.rect(cornerRadius: enabled ? 60 : 0))
+                .animation(
+                    .interpolatingSpring(stiffness: 10, damping: 1),
+                    value: enabled
+                )
+            Text("Final")
+                .onTapGesture {
+                }
+                .frame(width: 200, height: 200)
+                .background(.red)
+                .foregroundStyle(.white)
+                .clipShape(.rect(cornerRadius: enabled ? 60 : 0))
+                .animation(.default, value: enabled)
+        }
+
     }
 }
 
